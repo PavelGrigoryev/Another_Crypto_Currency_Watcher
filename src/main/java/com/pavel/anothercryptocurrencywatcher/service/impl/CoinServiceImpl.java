@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import javax.sound.midi.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -111,6 +112,30 @@ public class CoinServiceImpl implements CoinService {
                         + " is " + dbPrice);
                 double percent = (userPrice.getUserPrice() - dbPrice) / dbPrice * 100;
                 if (1 < Math.abs(percent)) {
+                    try {
+                        Sequencer sequencer = MidiSystem.getSequencer();
+                        sequencer.open();
+
+                        Sequence sequence = new Sequence(Sequence.PPQ, 4);
+                        Track track = sequence.createTrack();
+
+                        ShortMessage firstMessage = new ShortMessage();
+                        firstMessage.setMessage(144, 1, 44, 100);
+                        MidiEvent noteOn = new MidiEvent(firstMessage, 1);
+                        track.add(noteOn);
+
+                        ShortMessage secondMessage = new ShortMessage();
+                        secondMessage.setMessage(128, 1, 44, 100);
+                        MidiEvent noteOff = new MidiEvent(secondMessage, 16);
+                        track.add(noteOff);
+
+                        sequencer.setSequence(sequence);
+                        sequencer.start();
+
+                    } catch (Exception exception) {
+                        log.error(exception.getMessage(), exception);
+                    }
+
                     log.warn("Price for user " + userPrice.getUserName() + " with coin " + userPrice.getSymbol()
                             + " changed " + percent);
                 }
