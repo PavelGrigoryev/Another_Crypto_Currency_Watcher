@@ -110,7 +110,7 @@ public class CoinServiceImpl implements CoinService {
                 double dbPrice = getLastPrice(userPrice.getSymbol()).getPrice();
                 log.info("Price for user " + userPrice.getUserName() + " with coin " + userPrice.getSymbol()
                         + " is " + dbPrice);
-                double percent = (userPrice.getUserPrice() - dbPrice) / dbPrice * 100;
+                double percent = (dbPrice - userPrice.getUserPrice()) / dbPrice * 100;
                 if (1 < Math.abs(percent)) {
                     try {
                         Sequencer sequencer = MidiSystem.getSequencer();
