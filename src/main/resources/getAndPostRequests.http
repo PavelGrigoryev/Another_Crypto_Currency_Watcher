@@ -1,0 +1,29 @@
+GET localhost:8080/coins/BTC
+Accept: application/json
+
+###
+
+GET localhost:8080/coins/ETH
+Accept: application/json
+
+###
+
+GET localhost:8080/coins/SOL
+Accept: application/json
+
+###
+
+POST localhost:8080/notify?userName=Бэндер&symbol=BTC
+Content-Type: application/json
+
+###
+
+POST localhost:8080/notify?userName=Евлампий&symbol=ETH
+Content-Type: application/json
+
+###
+
+POST localhost:8080/notify?userName=Слоник Джонсон&symbol=SOL
+Content-Type: application/json
+
+###
